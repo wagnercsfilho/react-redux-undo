@@ -60,5 +60,7 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "license": "MIT",
+  "private": false
 }
