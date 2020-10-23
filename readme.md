@@ -1,4 +1,4 @@
-### WHO TO USE
+### React Redux Undo
 
 A simple Redux middleware that allows you to undo changes in the state.
 
