@@ -39,6 +39,14 @@ function Count() {
 }
 ```
 
+#### Passing custom props
+
+Defines a maximum size of the history stack
+
+```js
+undoMiddeware({ maxHistory: 10 });
+```
+
 #### Example
 
 [Check a example](https://codesandbox.io/s/funny-solomon-9tv78)
