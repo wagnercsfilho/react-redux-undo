@@ -2,7 +2,7 @@
 
 A simple Redux middleware that allows you to undo changes in the state.
 
-#### WHO TO USE
+#### Who to use
 
 ```jsx
 import { applyMiddleware, createStore } from "redux";
