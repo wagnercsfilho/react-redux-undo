@@ -32,3 +32,7 @@ function Count() {
   );
 }
 ```
+
+#### License
+
+MIT
