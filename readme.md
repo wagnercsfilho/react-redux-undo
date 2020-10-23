@@ -39,6 +39,10 @@ function Count() {
 }
 ```
 
+#### Example
+
+[Check a example](https://codesandbox.io/s/funny-solomon-9tv78)
+
 #### License
 
 MIT
