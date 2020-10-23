@@ -2,7 +2,7 @@ export const UNDO = "__UNDO__";
 export const APPLY_UNDO = "__APPLY_UNDO__";
 export const CLEAR = "__CLEAR__";
 
-const undoMiddeware = function (options = { maxHistory: 10 }) {
+const undoMiddleware = function (options = { maxHistory: 10 }) {
   let _states = [];
   return (store) => (next) => (action) => {
     switch (action.type) {
@@ -51,4 +51,4 @@ const ActionCreators = {
   },
 };
 
-export { undoMiddeware, applyUndo, ActionCreators };
+export { undoMiddleware, applyUndo, ActionCreators };
