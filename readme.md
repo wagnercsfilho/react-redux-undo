@@ -2,6 +2,12 @@
 
 A simple Redux middleware that allows you to undo changes in the state.
 
+#### Install
+
+```
+npm install react-redux-undo
+```
+
 #### Who to use
 
 ```jsx
