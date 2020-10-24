@@ -1,44 +1,62 @@
-const UNDO = "__UNDO__";
-const APPLY_UNDO = "__APPLY_UNDO__";
-const CLEAR = "__CLEAR__";
+const UNDO = "@@redux-react-undo/undo";
+const REDO = "@@redux-react-undo/redo";
+const CLEAR = "@@redux-react-undo/clear";
 
-const undoMiddleware = function (options = { maxHistory: 10 }) {
-  let _states = [];
-  return (store) => (next) => (action) => {
-    switch (action.type) {
-      case UNDO:
-        if (_states.length) {
-          const s = _states.splice(-(action.position || 1));
-          const lastState = s.shift();
-          store.dispatch({ type: APPLY_UNDO, state: lastState });
-        }
-        break;
-      case CLEAR:
-        _states = [];
-        break;
-      default:
-        if (action.type !== APPLY_UNDO && action.type !== CLEAR) {
-          if (_states.length === options.maxHistory) {
-            _states.shift();
-          }
-          _states.push(store.getState());
-        }
-    }
-
-    next(action);
-  };
+const defaultOptions = {
+  maxHistory: 10,
 };
 
-const applyUndo = (_reducer) => {
-  const undoReducer = (prevState, currState, action) => {
-    if (action.type === APPLY_UNDO) {
-      return action.state;
-    }
-    return currState;
+const applyUndo = (_reducer, options = defaultOptions) => {
+  let _states = {
+    past: [],
+    future: [],
   };
-  return (state, action) => {
-    const _state = _reducer(state, action);
-    return undoReducer(state, _state, action);
+
+  options = { ...defaultOptions, ...options };
+
+  const undoReducer = (currState, action) => {
+    switch (action.type) {
+      case UNDO:
+        const previous = _states.past[_states.past.length - (action.position || 1)];
+        const newPast = _states.past.slice(
+          0,
+          _states.past.length - (action.position || 1)
+        );
+
+        if (previous) {
+          _states.past = newPast;
+          _states.future = [currState, ..._states.future];
+        }
+
+        return previous || currState;
+      case REDO:
+        const next = _states.future[0];
+        const newFuture = _states.future.slice(1);
+
+        if (next) {
+          _states.past = [..._states.past, currState];
+          _states.future = newFuture;
+        }
+
+        return next || currState;
+      case CLEAR:
+        _states.past = [];
+        _states.future = [];
+        return currState;
+      default:
+        const newPresent = _reducer(currState, action);
+        if (currState === newPresent) {
+          return currState;
+        }
+        if (currState) _states.past.push(currState);
+        if (options.maxHistory === _states.past.length - 1) {
+          _states.past = _states.past.slice(1);
+        }
+        return newPresent;
+    }
+  };
+  return (prevState, action) => {
+    return undoReducer(prevState, action);
   };
 };
 
@@ -46,9 +64,12 @@ const ActionCreators = {
   undo: (position = 1) => {
     return { type: UNDO, position };
   },
+  redo: () => {
+    return { type: REDO };
+  },
   clear: () => {
     return { type: CLEAR };
   },
 };
 
-export { APPLY_UNDO, ActionCreators, CLEAR, UNDO, applyUndo, undoMiddleware };
+export { ActionCreators, CLEAR, REDO, UNDO, applyUndo };

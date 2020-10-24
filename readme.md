@@ -1,6 +1,6 @@
 ### React Redux Undo
 
-A simple Redux middleware that allows you to undo changes in the state.
+A simple reducer enhancer (or a higher order reducer) that allows you to undo/redo changes in the state.
 
 #### Install
 
@@ -11,10 +11,10 @@ npm install react-redux-undo
 #### Who to use
 
 ```jsx
-import { applyMiddleware, createStore } from "redux";
-import { ActionCreators, applyUndo, undoMiddleware } from "react-redux-undo";
+import { createStore } from "redux";
+import { ActionCreators, applyUndo } from "react-redux-undo";
 
-const store = createStore(applyUndo(reducer), applyMiddleware(undoMiddleware()));
+const store = createStore(applyUndo(reducer));
 
 function App() {
   return (
@@ -31,9 +31,11 @@ function Count() {
   return (
     <div>
       <h1>Counter {counter}</h1>
-      <button onClick={() => dispatch({ type: "ADD" })}>ADD</button>
+      <button onClick={() => dispatch({ type: "ADD" })}>ADD COUNTER</button>
+      <hr />
       <button onClick={() => dispatch(ActionCreators.undo())}>UNDO</button>
       <button onClick={() => dispatch(ActionCreators.clear())}>CLEAR</button>
+      <button onClick={() => dispatch(ActionCreators.redo())}>UNDO</button>
     </div>
   );
 }

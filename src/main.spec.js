@@ -1,5 +1,4 @@
-import { applyUndo } from "../dist/react-redux-undo.cjs";
-import { ActionCreators, APPLY_UNDO, CLEAR, UNDO } from "./main";
+import { ActionCreators, CLEAR, UNDO, REDO } from "./main";
 
 describe("React Redux Undo", () => {
   describe("ActionCreators", () => {
@@ -16,50 +15,20 @@ describe("React Redux Undo", () => {
       });
     });
 
+    describe("redo", () => {
+      it("should return a redo action creator", () => {
+        expect(ActionCreators.redo()).toEqual({
+          type: REDO,
+        });
+      });
+    });
+
     describe("clear", () => {
       it("should return a clear action creator", () => {
         expect(ActionCreators.clear()).toEqual({
           type: CLEAR,
         });
       });
-    });
-  });
-
-  describe("applyUndo", () => {
-    it("should return a function", () => {
-      const reducerMock = () => {};
-      const undoReducer = applyUndo(reducerMock);
-
-      expect(undoReducer).toBeInstanceOf(Function);
-    });
-
-    it("should call reducer and return the current state", () => {
-      const reducerMock = (state) => {
-        return state;
-      };
-
-      const state = { count: 1 };
-      const action = {};
-
-      const undoReducer = applyUndo(reducerMock);
-
-      expect(undoReducer(state, action)).toEqual(state);
-    });
-
-    it("should apply undo and return last state if action type is APPLY_UNDO", () => {
-      const reducerMock = (state) => {
-        return state;
-      };
-
-      const state = { count: 2 };
-      const action = {
-        type: APPLY_UNDO,
-        state: { count: 1 },
-      };
-
-      const undoReducer = applyUndo(reducerMock);
-
-      expect(undoReducer(state, action)).toEqual(action.state);
     });
   });
 });
