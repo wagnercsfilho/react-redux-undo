@@ -6,6 +6,8 @@ A simple reducer enhancer (or a higher order reducer) that allows you to undo/re
 
 ```
 npm install react-redux-undo
+or
+yarn add react-redux-undo
 ```
 
 #### Who to use
