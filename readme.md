@@ -12,7 +12,7 @@ npm install react-redux-undo
 
 ```jsx
 import { createStore } from "redux";
-import { ActionCreators, applyUndo } from "react-redux-undo";
+import { applyUndo, ActionCreators } from "react-redux-undo";
 
 const store = createStore(applyUndo(reducer));
 
@@ -46,7 +46,7 @@ function Count() {
 Defines a maximum size of the history stack
 
 ```js
-undoMiddleware({ maxHistory: 10 });
+applyUndo((reducer: { maxHistory: 5 }));
 ```
 
 #### Example
