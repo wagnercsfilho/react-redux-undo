@@ -46,7 +46,7 @@ function Count() {
 Defines a maximum size of the history stack
 
 ```js
-applyUndo((reducer: { maxHistory: 5 }));
+applyUndo(reducer, { maxHistory: 5 });
 ```
 
 #### Example
